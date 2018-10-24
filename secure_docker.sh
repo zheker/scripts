@@ -38,6 +38,7 @@ rm -v client.csr server.csr
 chmod -v 0400 ca-key.pem key.pem server-key.pem
 chmod -v 0444 ca.pem server-cert.pem cert.pem
 
+cp ca.pem server-cert.pem server-key.pem /etc/ssl/private/
 mkdir /etc/systemd/system/docker.service.d/
 echo "[Service]
 ExecStart=
