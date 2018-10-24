@@ -37,3 +37,11 @@ openssl x509 -req -days 365 -sha256 -in client.csr -CA ca.pem -CAkey ca-key.pem 
 rm -v client.csr server.csr
 chmod -v 0400 ca-key.pem key.pem server-key.pem
 chmod -v 0444 ca.pem server-cert.pem cert.pem
+
+mkdir /etc/systemd/system/docker.service.d/
+echo "[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd --tlsverify --tlscacert=/etc/ssl/private/ca.pem --tlscert=/etc/ssl/private/server-cert.pem --tlskey=/etc/ssl/private/server-key.pem -H fd:// -H tcp://0.0.0.0:2376" > /etc/systemd/system/docker.service.d/startup_options.conf
+
+systemctl daemon-reload
+systemctl restart docker.service
